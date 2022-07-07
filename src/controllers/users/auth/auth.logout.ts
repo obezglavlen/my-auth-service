@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { getOneByUsername } from "../../../services/users";
 
 export default async function logout(
   req: Request,
@@ -12,8 +10,6 @@ export default async function logout(
   _user.accessToken = "";
 
   await _user.save();
-
-  // ! // TODO Remove tokens from database
 
   return {
     status: 200,

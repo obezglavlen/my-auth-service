@@ -1,4 +1,4 @@
-import statusController from "../../controllers/status";
+import statusController from "../../../controllers/status";
 
 export default [
   {

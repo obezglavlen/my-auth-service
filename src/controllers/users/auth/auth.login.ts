@@ -1,9 +1,7 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import generateTokens from "./generateTokens";
+import { Request, Response } from "express";
 import { getOneByUsername } from "../../../services/users";
-import { nextTick } from "process";
+import generateTokens from "./generateTokens";
 
 export default async function login(
   req: Request,

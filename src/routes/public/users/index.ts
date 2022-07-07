@@ -1,3 +1,2 @@
-import authRoutes from "./auth";
+export { default } from "./auth";
 
-export default [...authRoutes];

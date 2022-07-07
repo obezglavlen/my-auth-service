@@ -1,7 +1,7 @@
 import login from "./auth.login";
-import register from "./auth.register";
+import logout from "./auth.logout";
 import refreshToken from "./auth.refreshToken";
-import logout from "./auth.logout"
+import register from "./auth.register";
 
 export default {
   login,

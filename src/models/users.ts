@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { Model, model, Schema } from "mongoose";
 
 interface IUser {
   _id: string;
@@ -16,10 +16,10 @@ interface IUserMethods {
   comparePassword(arg: string): Promise<boolean>;
 }
 
-type UserModel = mongoose.Model<IUser, {}, IUserMethods>;
+type UserModel = Model<IUser, {}, IUserMethods>;
 
-const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
-  _id: {type: String, unique: true},
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
+  _id: String,
   username: {type: String, unique: true},
   email: {type: String, unique: true},
   password: String,
@@ -36,6 +36,6 @@ UserSchema.methods.comparePassword = async function (pass: string) {
   return await bcrypt.compare(pass, this.password)
 }
 
-const UserModel = mongoose.model("Users", UserSchema);
+const UserModel = model("Users", UserSchema);
 
 export default UserModel;

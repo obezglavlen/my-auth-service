@@ -1,4 +1,4 @@
-import {header} from "express-validator"
+import { header } from "express-validator"
 import authController from "../../../controllers/users/auth"
 
 export default [

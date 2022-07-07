@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { getOneByUsername } from "../services/users";
 
 export default async function jwtMiddleware(
