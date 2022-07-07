@@ -1,3 +1,4 @@
-import statusRoutes from "./status"
+import statusRoutes from "./status";
+import userRoutes from "./users";
 
-export default [...statusRoutes]
+export default [...statusRoutes, ...userRoutes];
