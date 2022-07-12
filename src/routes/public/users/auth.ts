@@ -1,5 +1,6 @@
-import { body } from "express-validator";
+import Joi from "joi";
 import authController from "../../../controllers/users/auth";
+import { Request } from "express";
 
 export default [
   {
@@ -7,24 +8,35 @@ export default [
     route: "/login",
     controller: authController,
     action: "login",
-    validate: [body("username").isString(), body("password").isString()],
+    validate: Joi.object<Request>({
+      body: Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+      }),
+    }),
   },
   {
     method: "post",
     route: "/register",
     controller: authController,
     action: "register",
-    validate: [
-      body("username").isString(),
-      body("password").isString(),
-      body("email").isEmail(),
-    ],
+    validate: Joi.object<Request>({
+      body: Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+        email: Joi.string(),
+      }),
+    }),
   },
   {
     method: "post",
     route: "/refreshtoken",
     controller: authController,
     action: "refreshToken",
-    validate: [body("refreshToken").isString()],
+    validate: Joi.object<Request>({
+      body: Joi.object({
+        refreshToken: Joi.string().required(),
+      }),
+    }),
   },
 ];

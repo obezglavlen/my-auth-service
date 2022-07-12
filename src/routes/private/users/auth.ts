@@ -1,5 +1,4 @@
-import { header } from "express-validator"
-import authController from "../../../controllers/users/auth"
+import authController from "../../../controllers/users/auth";
 
 export default [
   {
@@ -7,8 +6,6 @@ export default [
     route: "/logout",
     controller: authController,
     action: "logout",
-    validate: [
-      header("authorization").isString()
-    ]
-  }
-]
+    validate: null,
+  },
+];

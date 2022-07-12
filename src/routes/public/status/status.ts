@@ -6,6 +6,6 @@ export default [
     route: "/status",
     controller: statusController,
     action: "get",
-    validate: [],
+    validate: null,
   },
 ];

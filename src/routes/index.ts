@@ -1,23 +1,30 @@
 import { Router, Request, Response } from "express";
 import publicRoutes from "./public";
 import privateRoutes from "./private";
-import { validationResult, header } from "express-validator";
 import jwtMiddleware from "../middlewares/jwt-middleware";
 import errorMiddleware from "../middlewares/error-middleware";
+import Joi from "joi";
 
 const router = Router();
 
 function routeFactory(route: any) {
   (router as any)[route.method](
     route.route,
-    ...(route as any).validate,
-    async (req: Request, res: Response, next: Function) => {
-      const errors = validationResult(req);
+    (req: Request, res: Response, next: Function) => {
+      const schema = (route as any).validate as Joi.Schema;
+      const validationResult = schema
+        ? schema.validate(req, {
+            allowUnknown: true,
+          })
+        : { error: null };
 
-      if (errors.array().length) {
-        return next(errors);
+      if (validationResult.error) {
+        return next(validationResult.error);
       }
 
+      return next();
+    },
+    async (req: Request, res: Response, next: Function) => {
       try {
         const result = await (route.controller as any)[route.action](
           req,
@@ -26,26 +33,33 @@ function routeFactory(route: any) {
         );
         return res.status(result.status).json(result.data);
       } catch (err) {
-        next(err);
+        return next(err);
       }
     }
   );
 }
 
 function jwtMiddlewareFactory() {
-  return (
-    header("authorization").isString(),
+  return [
     (req: Request, res: Response, next: Function) => {
-      const errors = validationResult(req);
+      const schema = Joi.object<typeof req.headers>({
+        authorization: Joi.string().required(),
+      });
 
-      if (errors.array().length) {
-        return next(errors);
+      console.log(req.headers);
+
+      const validationResult = schema.validate(req.headers, {
+        allowUnknown: true,
+      });
+
+      if (validationResult.error) {
+        return next(validationResult.error);
       }
 
       return next();
     },
-    jwtMiddleware
-  );
+    jwtMiddleware,
+  ];
 }
 
 // Add pulbic routes to router
